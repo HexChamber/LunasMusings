@@ -1,0 +1,11 @@
+{% load content_tags %}
+<div class="field">
+    <div class="control">
+        <div id="fileField" class="file {{ classes }} has-name">
+            <label class="file-label">
+                {{ field|bulma_file:classes }}
+                {{ field|bulma_label:classes }}
+            </label>
+        </div>
+    </div>
+</div>

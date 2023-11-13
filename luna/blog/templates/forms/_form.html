@@ -1,0 +1,21 @@
+{% load content_tags %}
+{% if form.non_field_errors %}
+<div class="notification is-danger">
+    <button class="delete"></button>
+    {% for error in form.non_field_errors %}
+    <p>{{ error }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% for field in form.hidden_fields %}
+{{ field }}
+{% endfor %}
+
+{% for field in form.visible_fields %}
+    {% if field|is_file %}
+        {% include 'forms/_file_upload.html' with field=field classes=classes %}
+    {% else %}
+        {% include 'forms/_field.html' with field=field classes=classes %}
+    {% endif %}
+{% endfor %}

@@ -1,0 +1,217 @@
+<!-- {% extends "bulma/base.html" %}
+{% load static bulma_tags content_tags %}
+{% block header %}
+<nav class="navbar is-dark is-spaced" role="navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <img src="{% static 'imgs/logo.png' %}" alt="Logo" width="112" height="28">
+        </a>
+        <div class="navbar-burger burger" data-target="navbarMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <div id="navbarMenu" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">Home</a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">Community</a>
+
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" href="#">Musings Newsletter</a>
+                    <a class="navbar-item" href="#">Discord</a>
+                    <a class="navbar-item" href="#">Writers</a>
+                </div>
+            </div>
+        </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="field is-grouped">
+                    {% if request.user.is_authenticated %}
+                    <p class="control">
+                        <a class="button is-danger is-outlined" href="#">Admin Logout</a>
+                    </p>
+                    {% else %}
+                    <p class="control">
+                        <a class="button is-primary" href="#">Submissions</a>
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+
+{% block hero %}
+    {% if hero_content %}
+    <section class="hero is-primary is-medium">
+        <div class="container has-text-centered">
+            {{ hero_content }}
+        </div>
+    </section>
+    {% endif %}
+{% endblock %}
+<section class="section">
+    <div class="container">
+        {% block messages %}
+            {% if messages %}
+            <div class="messages columns is-desktop is-centered">
+                <div class="column is-two-fifths">
+                    {% for message in messages %}
+                    <div class="message {% if message.tags %}is-{{ message.tags|bulma_message_tag }}{% endif %}">
+                        <div class="message-body">{{ message }}</div>
+                    </div>
+                    {% endfor %|}
+                </div>
+            </div>
+            {% endif %}
+        {% endblock %}
+        <div class="columns is-centered is-desktop">
+            <div class="column is-9">
+                {% block content %}
+                {% endblock %}
+            </div>
+            <div class="column is-3">
+                <aside class="menu box has-background-black">
+                    {% block sidebar %}
+                    {% endblock %}
+                    <hr>
+                    <h4 class="menu-label has-text-white"></h4>
+                </aside>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+{% load content_tags static bulma_tags %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tenor+Sans">
+        <style>
+            body {
+                font-family: "Tenor Sans";
+                background-color: #232323;
+            }
+            input.input, .textarea {
+                background-color: #232323;
+                color: #dedede;
+            }
+            p.indented {
+                text-indent: 30px;
+            }
+            aside.menu li a:hover {
+                background-color: #232323;
+            }
+
+        </style>
+    </head>
+    <body>
+        <nav class="navbar is-black">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <img src="{% static 'imgs/logo.png' %}" alt="Logo" width="112" height="28">
+                </a>
+                <div class="navbar-burger burger" data-target="navbarMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="navbar-start is-black">
+                <a class="navbar-item" href="/">Home</a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">More</a>
+
+                    <div class="navbar-dropdown has-background-black has-text-white">
+                        <a class="navbar-item" href="#">Museletter</a>
+                        <a class="navbar-item" href="#">Community Discord</a>
+                        <a class="navbar-item" href="#">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="field is-grouped">
+                        {% if request.user.is_authenticated %}
+                        <p class="control">
+                            <a class="button is-danger is-medium is-outlined" href="{% url 'logout '%}">Admin Logout</a>
+                        </p>
+                        {% else %}
+                        <p class="control">
+                            <a class="button is-primary is-outlined is-medium" href="#">Submissions</a>
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <section class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-9">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                    <div class="column is-3">
+                        <aside class="menu box has-background-black">
+                            {% block sidenav %}
+                            {% endblock %}
+                            <hr> 
+                            {% show_latest_posts %}
+                            <hr>
+                            <h4 class="menu-label has-text-white">Popular posts</h4>
+                            {% get_most_commented_posts as most_commented %}
+                            <ul class="menu-list">
+                                {% for post in most_commented %}
+                                <li><a class="has-text-white" href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                            <hr>
+                            <h4 class="menu-label has-text-white has-text-weight-semibold">Home to {% total_posts %} independent publications thus far!</h4>
+                        </aside>
+                        <div class="buttons">
+                            <a class="button is-block is-fullwidth is-light is-outlined" href="{% url 'blog:post_feed' %}">Subscribe to RSS Feed</a>
+                            <a class="button is-block is-fullwidth is-info" href="#">Join the MuseLetter Mail List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="footer has-background-black">
+            <div class="container has-text-centered has-text-white">
+                <p>hello</p>
+            </div>
+        </footer>
+        <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.js">
+
+        </script>
+        <script>
+            const csrftoken = Cookies.get('csrftoken');
+            document.addEventListener('DOMContentLoaded', () => {
+                (document.querySelectorAll('.notification .delete') || []).forEach($delete) => {
+                    const $notification = $delete.parentNode;
+
+                    $delete.addEventListener('click', () => {
+                        $notification.parentNode.removeChild($notification);
+                    });
+                }
+            {% block domready %}
+            {% endblock %}
+            });
+            
+        </script>
+        {% block extra_js %}
+        {% endblock %}
+    </body>
+</html>

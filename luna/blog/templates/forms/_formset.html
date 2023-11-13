@@ -1,0 +1,7 @@
+{% load content_tags %}
+{{ formset.management_form }}
+{% for form in formset %}
+    <div class="classes">
+        {% include 'forms/_form.html' with form=form classes=classes %}
+    </div>
+{% endfor %}

@@ -1,0 +1,34 @@
+{% extends "blog/base.html" %}
+{% load content_tags %}
+{% block title %}Musings{% endblock %}
+{% block content %}
+<h2 class="title is-2 has-text-centered has-text-white">Recent Musings</h2>
+{% if tag %}
+<span class="subtitle tag is-primary is-large">{{ tag.name }}</span>
+{% endif %}
+<hr>
+{% for post in posts %}
+<div class="card has-background-primary-dark">
+    <div class="card-header has-background-info-dark">
+        <a class="card-header-title has-text-white is-size-4" href="{{ post.get_absolute_url }}">
+            {{ post.title }}
+        </a>
+        <p class="has-text-weight-light has-text-white is-size-7 mr-2 mt-2">Published {{ post.publish }} by {{ post.author }}</p>
+    </div>
+    <div class="card-content">
+        <div class="tags is-right">
+            {% for tag in post.tags.all %}
+            <a class="tag is-{% cycle 'primary' 'danger' 'info' 'warning' 'link' 'success' 'black' %}" href="{% url 'blog:post_list_by_tag' tag.slug %}">{{ tag.name }}</a>
+            {% endfor %}
+            {% resetcycle %}
+        </div>
+
+        <div class="content has-text-white has-text-weight-semibold">
+            {{ post.body|article|markdown|truncatewords_html:30 }}
+        </div>
+    </div>
+</div>
+<br>
+{% endfor %}
+{% include "pagination.html" with page=posts %}
+{% endblock %}
