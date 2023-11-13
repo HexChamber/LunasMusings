@@ -7,6 +7,36 @@ User = get_user_model()
 
 # Create your models here.
 
+class DraftsManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            status=Post.Status.DRAFT
+        )
+    
+
+class ReviewsManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            status=Post.Status.REVIEW
+        )
+    
+
+class ApprovedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            status=Post.Status.APPROVED
+        )
+    
+
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            status=Post.Status.PUBLISHED
+        )
+    
+
+
+
 
 class Post(models.Model):
     class Status(models.TextChoices):
@@ -32,7 +62,11 @@ class Post(models.Model):
         choices=Status.choices,
         default=Status.DRAFT
     )
-
+    objects = models.Manager()
+    drafts = DraftsManager()
+    under_review = ReviewsManager()
+    approved = ApprovedManager()
+    published = PublishedManager()
     class Meta:
         ordering = ['-publish']
         indexes = [
