@@ -1,0 +1,28 @@
+{% extends "blog/base.html" %}
+{% load content_tags %}
+{% block title %}Share this post{% endblock %}
+{% block content %}
+    {% if sent %}
+    <h2 class="title is-2 has-text-centered has-text-white">Post shared</h2>
+    <hr>
+    <div class="notification is-large is-success">
+        <a class="delete" href="{% url 'blog:post_list' %}"></a>
+        <p class="indented">Post has been successfully shared to <strong>{{ form.cleaned_data.to }}</strong></p>
+    </div>
+    {% else %}
+    <h2 class="title is-2 has-text-centered has-text-white">Share <em>{{ post.title }}</em></h2>
+    <p class="subtitle has-text-centered has-text-white">Send this post to you or someone else via e-mail</p>
+    <hr>
+    <div class="column box has-background-info-dark is-half is-offset-one-quarter">
+        <form method="post">
+            {% csrf_token %}
+            {{ form|bulma_form:"has-text-white" }}
+            <div class="field">
+                <div class="control">
+                    <input type="submit" value="Share" class="button  is-white is-outlined is-block is-fullwidth has-text-centered">
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}

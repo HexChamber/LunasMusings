@@ -1,8 +1,10 @@
 from django import template, forms
 from django.utils.html import format_html
+from django.db.models import Count
 from django.utils.safestring import mark_safe
 from django.template.loader import get_template
 import markdown
+from ..models import Post
 # from ..models import FeaturedContent
 
 
@@ -10,11 +12,13 @@ register = template.Library()
 
 
 @register.filter(name="article")
-def article_format(content, class_string=None):
-    if class_string:
-        content = content.replace("\t", f'<p class={class_string}>')
-    else:
-        content = content.replace('\t', '<p>')
+def article_format(content, class_string=""):
+    # if class_string:
+    #     content = content.replace("\t", f'<p class={class_string}>')
+    # else:
+    #     content = content.replace('\t', '<p>')
+    class_string += " indented"
+    content = content.replace('\t', f'<p class="{class_string}">')
     content = content.replace('\n', '</p>')
     if not content.endswith('</p>'):
         content += "</p>"
@@ -145,3 +149,24 @@ def render(obj, classes):
                 'classes': classes
             }
     return template.render(context)
+
+
+
+@register.simple_tag 
+def total_posts():
+    return Post.published.count()
+
+
+@register.inclusion_tag('blog/post/latest_posts.html')
+def show_latest_posts(count=5):
+    latest_posts = Post.published.order_by('-publish')[:count]
+    return {
+        'latest_posts': latest_posts
+    }
+
+
+@register.simple_tag
+def get_most_commented_posts(count=5):
+    return Post.published.annotate(
+        total_comments=Count('comments')
+    ).order_by('-total_comments')[:count]

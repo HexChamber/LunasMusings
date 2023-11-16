@@ -107,7 +107,7 @@ class Comment(models.Model):
     class Meta: 
         ordering = ['-created']
         indexes = [
-            models.index(fiels=['created']),
+            models.Index(fields=['created']),
 
         ]
 

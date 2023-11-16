@@ -1,0 +1,8 @@
+<h4 class="menu-label has-text-white">
+    Latest Posts
+</h4>
+<ul class="menu-list">
+    {% for post in latest_posts %}
+    <li><a class="has-text-white" href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>

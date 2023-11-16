@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+{% block title %}Add a comment{% endblock %}
+{% block content %}
+    {% if comment %}
+    <h2 class="title is-2 has-text-centered">
+        Comment published
+    </h2>
+    <hr>
+    <div class="notification is-large is-success is-light">
+        <a class="delete" href="{{ post.get_absolute_url }}"></a>
+        <p class="indented">Your comment has been successfully published.</p>
+        <p class="indented">Exit this message to return to the original post.</p>
+    </div>
+    {% else %}
+    <h2 class="title is-2 has-text-centered">
+        Add a comment
+    </h2>
+    <hr>
+    {% include "blog/post/includes/comment_form.html" %}
+    {% endif %}
+{% endblock %}

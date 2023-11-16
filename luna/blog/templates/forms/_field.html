@@ -1,7 +1,7 @@
 {% load content_tags %}
 <div class="field">
     {% if field|is_checkbox %}
-    {{ field|bulma_label:classes }} {{ field|bulma_check:classes }}
+    {{ field|bulma_label:classes }} {{ field|bulma_checkbox:classes }}
 
     {% else %}
     {{ field|bulma_label:classes }} 
@@ -10,10 +10,11 @@
         {{ field|bulma_text:classes }}
         {% elif field|is_select %}
         {{ field|bulma_select:classes }}
-        {% elif field|is_checkbos %}
+        {% elif field|is_checkbox %}
         {{ field|bulma_checkbox:classes }}
         {% else %}
         {{ field|bulma_input:classes }}
+        {% endif %}
         {% for error in field.errors %}
         <span class="help is-danger {{ form.error_css_class }}">{{ error }}</span>
         {% endfor %}

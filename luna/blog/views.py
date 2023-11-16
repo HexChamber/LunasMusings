@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.core.mail import send_mail 
-from django.db import Count 
+from django.db.models import Count 
 from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery
 from .models import Post, Comment
 from .forms import EmailPostForm, CommentForm, SearchForm
@@ -90,7 +90,7 @@ def post_share(request, post_id):
 
             subject = f'{cd["name"]} recommends "{post.title }"'
             message = f'''
-                Read "{ post.title }" at {{ post_url }}\n\n{ cd["name"]}\'s comments: { comments }
+                Read "{ post.title }" at {{ post_url }}\n\n{ cd["name"]}\'s comments: { cd["comments"] }
             '''
             send_mail(subject, message, settings.DRIP_EMAIL_SENDER, [cd["to"]])
             sent = True

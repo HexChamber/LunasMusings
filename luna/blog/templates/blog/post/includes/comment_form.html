@@ -1,0 +1,15 @@
+{% load content_tags %}
+<div class="column is-three-fifths is-offset-one-fifth box has-background-info-dark">
+    <h4 class="title is-4 has-text-white has-text-centered">
+        Add a new comment
+    </h4>
+    <form action="{% url 'blog:post_comment' post.id %}" method="post">
+        {% csrf_token %}
+        {{ form|bulma_form:"has-text-white" }}
+        <div class="field">
+            <div class="control">
+                <input type="submit" value="Post comment" class="button is-black is-block is-fullwidth has-text-centered">
+            </div>
+        </div>
+    </form>
+</div>

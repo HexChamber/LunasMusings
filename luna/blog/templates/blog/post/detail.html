@@ -9,7 +9,7 @@
     Published {{ post.publish }} by {{ post.author }}.
 </p>
 <hr>
-<div class="content has-text-white box has-background-primary">
+<div class="content has-text-white box has-background-info-dark">
     {{ post.body|article:"has-text-white"|markdown }}
 </div>
 <div class="buttons is-centered">
@@ -19,7 +19,7 @@
 {% with comments.count as total_comments %}
 <div class="column">
     <h4 class="title has-text-centered has-text-white">
-        {{ total_comments }} comment{{ total_comments.pluralize }}
+        {{ total_comments }} comment{{ total_comments|pluralize }}
     </h4>
 
 {% endwith %}
