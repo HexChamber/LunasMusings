@@ -1,0 +1,114 @@
+{% load static content_tags %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tenor+Sans">
+        <style>
+            body {
+                font-family: "Tenor Sans";
+                background-color: #232323;
+            }
+            input.input, .textarea {
+                background-color: #232323;
+                color: #dfdfdf;
+            }
+            p.indented {
+                text-indent: 30px
+            }
+            aside.menu li a:hover {
+                background-color: #232323;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar is-black">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/shop/">
+                    <img src="{% static 'imgs/logo.png' %}" alt="Logo" width="112" height="28">
+                </a>
+                <div class="navbar-burger burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="navbar-start">
+                <a class="navbar-item" href="{% url 'shop:product_list' %}">Store</a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link" href="#">
+                        Lunas Chambers
+                    </a>
+                    <div class="navbar-dropdown is-boxed">
+                        <a class="navbar-item" href="{# url 'blog:post_list' %}">Luna's Musings</a>
+                        <a class="navbar-item" href="#">Contact Luna</a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <a class="button is-primary">s</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <section class="hero is-info is-medium">
+            <div class="hero-body">
+                <div class="container">
+                    <h4 class="title is-4">$0.00</h4>
+                    <p class="subtitle has-text-weight-semibold">Your cart is empty.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-9 has-text-centered">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                    <div class="column is-3">
+                        <div class="buttons">
+                            <a class="button is-block is-large is-fullwidth is-warning" href="#">Checkout</a>
+                        </div>
+                        <aside class="menu box has-background-black">
+                            {% block sidenav %}
+                            {% endblock %}
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer has-background-black">
+            <div class="container has-text-centered has-text-white">
+                <p>Hello world</p>
+            </div>
+        </footer>
+        <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+        <script>
+            const csrftoken = Cookies.get('csrftoken');
+            document.addEventListener('DOMContentLoaded', () => {
+                (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                    const $notification = $delete.parentNode;
+
+                    $delete.addEventListener('click', () => {
+                        $notification.parentNode.removeChild($notification);
+                    });
+                });
+                {% block domready %}
+                {% endblock %}
+            });
+        </script>
+        {% block extra_js %}
+        {% endblock %}
+    </body>
+</html>
